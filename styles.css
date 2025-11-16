@@ -1,0 +1,378 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* RFK Jr Face Styles */
+.rfk-face {
+    position: fixed;
+    z-index: 10000;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    pointer-events: auto;
+}
+
+.face-container {
+    position: relative;
+    width: 120px;
+    height: 150px;
+    background: white;
+    border: 3px solid #4a6fa5;
+    border-radius: 60% 60% 50% 50%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.hair {
+    width: 100px;
+    height: 30px;
+    background: #8B4513;
+    border-radius: 50% 50% 0 0;
+    position: absolute;
+    top: -15px;
+}
+
+.face {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    background: #FFE0B2;
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+.eyes {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 15px 0;
+}
+
+.eye {
+    width: 15px;
+    height: 15px;
+    background: #333;
+    border-radius: 50%;
+    position: relative;
+}
+
+.eye::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+}
+
+.nose {
+    width: 12px;
+    height: 20px;
+    background: #E8B796;
+    border-radius: 6px;
+    margin: 5px auto;
+}
+
+.mouth {
+    width: 30px;
+    height: 8px;
+    background: #C45A5A;
+    border-radius: 0 0 15px 15px;
+    margin: 5px auto;
+}
+
+.rfk-face .text {
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a6fa5;
+    text-align: center;
+}
+
+/* Random floating animation */
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(5px, 5px) rotate(1deg); }
+    50% { transform: translate(-5px, 3px) rotate(-1deg); }
+    75% { transform: translate(3px, -5px) rotate(1deg); }
+}
+
+.rfk-face {
+    animation: float 6s ease-in-out infinite;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #4a6fa5;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.question-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: none;
+    position: relative;
+    z-index: 2;
+}
+
+.question-container.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.question-number {
+    font-size: 1.2rem;
+    color: #4a6fa5;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.question-text {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.option {
+    padding: 15px;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.option:hover {
+    background-color: #f0f4f8;
+    border-color: #c8d4e3;
+}
+
+.option.selected {
+    background-color: #e8f0fe;
+    border-color: #4a6fa5;
+    color: #4a6fa5;
+}
+
+.btn {
+    padding: 12px 25px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin-left: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.btn:hover {
+    background-color: #3a5a80;
+}
+
+.btn:disabled {
+    background-color: #a0b3d1;
+    cursor: not-allowed;
+}
+
+.progress-container {
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: #e1e8ed;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4a6fa5;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.result-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: none;
+    position: relative;
+    z-index: 2;
+}
+
+.result-container.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.result-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.result-message {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    line-height: 1.8;
+}
+
+.scoring-info {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    text-align: left;
+    border-left: 4px solid #4a6fa5;
+    position: relative;
+    z-index: 2;
+}
+
+.scoring-info h3 {
+    color: #4a6fa5;
+    margin-bottom: 15px;
+}
+
+.scoring-info p {
+    margin-bottom: 10px;
+}
+
+.disclaimer {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e8ed;
+    position: relative;
+    z-index: 2;
+}
+
+.restart-btn {
+    background-color: #28a745;
+    margin: 20px auto 0;
+    position: relative;
+    z-index: 2;
+}
+
+.restart-btn:hover {
+    background-color: #218838;
+}
+
+.email-status {
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    z-index: 2;
+}
+
+.email-status.sending {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.email-status.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.email-status.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .question-text {
+        font-size: 1.2rem;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .rfk-face {
+        transform: scale(0.8);
+    }
+}
