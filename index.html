@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQ-10 Autism Spectrum Quotient</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AQ-10 Autism Spectrum Quotient</h1>
+            <p class="description">A quick referral guide for adults with suspected autism who do not have a learning disability.</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="progress-text" id="progress-text">Question 1 of 10</div>
+        </div>
+
+        <div class="question-container active" id="question-1">
+            <div class="question-number">Question 1</div>
+            <div class="question-text">I often notice small sounds when others do not</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-1" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-2">
+            <div class="question-number">Question 2</div>
+            <div class="question-text">I usually concentrate more on the whole picture, rather than the small details</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-2" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-3">
+            <div class="question-number">Question 3</div>
+            <div class="question-text">I find it easy to do more than one thing at once</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-3" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-4">
+            <div class="question-number">Question 4</div>
+            <div class="question-text">If there is an interruption, I can switch back to what I was doing very quickly</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-4" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-5">
+            <div class="question-number">Question 5</div>
+            <div class="question-text">I find it easy to 'read between the lines' when someone is talking to me</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-5" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-6">
+            <div class="question-number">Question 6</div>
+            <div class="question-text">I know how to tell if someone listening to me is getting bored</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-6" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-7">
+            <div class="question-number">Question 7</div>
+            <div class="question-text">When I'm reading a story I find it difficult to work out the characters' intentions</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-7" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-8">
+            <div class="question-number">Question 8</div>
+            <div class="question-text">I like to collect information about categories of things (e.g. types of car, types of bird, types of train, types of plant etc)</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-8" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-9">
+            <div class="question-number">Question 9</div>
+            <div class="question-text">I find it easy to work out what someone is thinking or feeling just by looking at their face</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-9" disabled>Next</button>
+        </div>
+
+        <div class="question-container" id="question-10">
+            <div class="question-number">Question 10</div>
+            <div class="question-text">I find it difficult to work out people's intentions</div>
+            <div class="options">
+                <div class="option" data-value="definitely-agree">Definitely Agree</div>
+                <div class="option" data-value="slightly-agree">Slightly Agree</div>
+                <div class="option" data-value="slightly-disagree">Slightly Disagree</div>
+                <div class="option" data-value="definitely-disagree">Definitely Disagree</div>
+            </div>
+            <button class="btn" id="next-btn-10">Get Results</button>
+        </div>
+
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">AQ-10 Screening Results</h2>
+            <div class="result-message" id="result-message"></div>
+            <div class="scoring-info">
+                <h3>Scoring Information</h3>
+                <p><strong>Scoring:</strong> Only 1 point can be scored for each question.</p>
+                <p>Score 1 point for <strong>Definitely Agree</strong> or <strong>Slightly Agree</strong> on questions 1, 7, 8, and 10.</p>
+                <p>Score 1 point for <strong>Definitely Disagree</strong> or <strong>Slightly Disagree</strong> on questions 2, 3, 4, 5, 6, and 9.</p>
+                <p>If the individual scores <strong>6 or above</strong>, consider referring them for a specialist diagnostic assessment.</p>
+            </div>
+            <div class="email-status" id="email-status"></div>
+            <button class="btn restart-btn" id="restart-btn">Take Again</button>
+            <div class="disclaimer">
+                <p><strong>Important:</strong> This screening tool is for informational purposes only and is not a diagnostic instrument. Only a qualified healthcare professional can make a diagnosis of autism spectrum condition.</p>
+                <p>This test is recommended in 'Autism: recognition, referral, diagnosis and management of adults on the autism spectrum' (NICE clinical guideline CG142).</p>
+                <p>If you have concerns about autism, please consult with a healthcare provider for a comprehensive evaluation.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
