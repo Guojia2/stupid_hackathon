@@ -12,6 +12,9 @@ const responses = {
     q10: ''
 };
 
+// API Configuration
+const API_BASE_URL = 'http://localhost:5001';
+
 // DOM elements
 const progressBar = document.getElementById('progress');
 const progressText = document.getElementById('progress-text');
@@ -53,6 +56,22 @@ let currentQuestion = 0;
 function init() {
     updateProgress();
     setupEventListeners();
+    checkAPIHealth();
+}
+
+// Check if the Flask API is running
+async function checkAPIHealth() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/health`);
+        const data = await response.json();
+        console.log('✓ API Health Check:', data);
+        if (!data.model_loaded) {
+            console.warn('⚠ Model not loaded on backend');
+        }
+    } catch (error) {
+        console.error('✗ API not reachable. Make sure Flask server is running:', error);
+        console.log('💡 Run: python app.py');
+    }
 }
 
 // Update progress bar
@@ -138,8 +157,37 @@ function calculateAQ10Score() {
     return score;
 }
 
+// Run model inference via Flask API
+async function runModelInference() {
+    try {
+        emailStatus.innerHTML = '<p>🔄 Running AI model inference...</p>';
+        emailStatus.className = 'email-status sending';
+        
+        const response = await fetch(`${API_BASE_URL}/predict`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ responses: responses })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API returned status ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✓ Model Inference Result:', result);
+        
+        return result;
+        
+    } catch (error) {
+        console.error('✗ Model inference failed:', error);
+        return null;
+    }
+}
+
 // Show results
-function showResults() {
+async function showResults() {
     // Hide all question containers
     questionContainers.forEach(container => {
         container.classList.remove('active');
@@ -148,35 +196,81 @@ function showResults() {
     // Hide progress bar
     document.querySelector('.progress-container').style.display = 'none';
     
-    // Calculate score
-    const score = calculateAQ10Score();
+    // Calculate traditional AQ-10 score
+    const aq10Score = calculateAQ10Score();
     
-    // Generate result message based on score
-    let message, recommendation;
-    if (score >= 6) {
-        message = `Your AQ-10 score is <strong>${score}/10</strong>.`;
+    // Run model inference
+    const modelResult = await runModelInference();
+    
+    // Generate result message
+    let message, recommendation, modelInsight = '';
+    
+    if (aq10Score >= 6) {
+        message = `Your AQ-10 score is <strong>${aq10Score}/10</strong>.`;
         recommendation = "Based on the AQ-10 scoring guidelines, a score of 6 or above suggests you may benefit from a specialist diagnostic assessment for autism spectrum condition.";
     } else {
-        message = `Your AQ-10 score is <strong>${score}/10</strong>.`;
+        message = `Your AQ-10 score is <strong>${aq10Score}/10</strong>.`;
         recommendation = "Based on the AQ-10 scoring guidelines, a score below 6 suggests a lower likelihood of autism spectrum traits. However, if you have ongoing concerns, consulting with a healthcare professional can provide clarity.";
+    }
+    
+    // Add model insights if available
+    if (modelResult) {
+        const autismProb = (modelResult.model_probabilities.autism * 100).toFixed(1);
+        const prediction = modelResult.model_prediction === 1 ? 'Positive' : 'Negative';
+        const confidence = modelResult.interpretation.confidence;
+        
+        modelInsight = `
+            <div style="margin-top: 25px; padding: 20px; background-color: #f0f4f8; border-radius: 8px; border-left: 4px solid #4a6fa5;">
+                <h3 style="color: #4a6fa5; margin-bottom: 15px;">🤖 AI Model Analysis</h3>
+                <p><strong>Model Prediction:</strong> ${prediction} screening</p>
+                <p><strong>Autism Probability:</strong> ${autismProb}%</p>
+                <p><strong>Confidence:</strong> ${confidence}</p>
+                <p><strong>Agreement:</strong> ${modelResult.interpretation.agreement}</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #6c757d;">
+                    <em>This prediction comes from a machine learning model trained on the UCI Autism Screening dataset.</em>
+                </p>
+            </div>
+        `;
+    } else {
+        modelInsight = `
+            <div style="margin-top: 25px; padding: 20px; background-color: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+                <p><strong>⚠ Model inference unavailable</strong></p>
+                <p style="font-size: 0.9rem; margin-top: 10px;">
+                    Make sure the Flask backend is running: <code>python app.py</code>
+                </p>
+            </div>
+        `;
     }
     
     // Display result
     resultMessage.innerHTML = `
         <p>${message}</p>
         <p>${recommendation}</p>
+        ${modelInsight}
     `;
     
     // Show result container
     resultContainer.classList.add('active');
     
     // Send email notification
-    sendEmailNotification(score, message, recommendation);
+    sendEmailNotification(aq10Score, message, recommendation, modelResult);
 }
 
 // Send email notification to RFK Jr
-function sendEmailNotification(score, message, recommendation) {
+function sendEmailNotification(score, message, recommendation, modelResult) {
     const responsesSummary = generateResponsesSummary();
+    
+    // Add model results to email if available
+    let modelSection = '';
+    if (modelResult) {
+        modelSection = `
+AI Model Analysis:
+- Model Prediction: ${modelResult.model_prediction === 1 ? 'Positive' : 'Negative'} screening
+- Autism Probability: ${(modelResult.model_probabilities.autism * 100).toFixed(1)}%
+- Confidence: ${modelResult.interpretation.confidence}
+- Agreement with AQ-10: ${modelResult.interpretation.agreement}
+`;
+    }
     
     // Prepare email content
     const subject = `AQ-10 Autism Screening Results - Score: ${score}/10`;
@@ -184,10 +278,11 @@ function sendEmailNotification(score, message, recommendation) {
 AQ-10 Autism Spectrum Quotient Screening Completed:
 
 Score: ${score}/10
-Result: ${message}
+Result: ${message.replace(/<\/?strong>/g, '')}
 Recommendation: ${recommendation}
 Timestamp: ${new Date().toLocaleString()}
 
+${modelSection}
 Responses Summary:
 ${responsesSummary}
 
@@ -265,7 +360,7 @@ function generateResponsesSummary() {
     ];
     
     for (let i = 1; i <= 10; i++) {
-        const responseText = responses[`q${i}`] ? responses[`q${i}`].replace('-', ' ').toUpperCase() : 'Not answered';
+        const responseText = responses[`q${i}`] ? responses[`q${i}`].replace(/-/g, ' ').toUpperCase() : 'Not answered';
         summary += `Q${i}: ${questionTexts[i-1]}\nAnswer: ${responseText}\n\n`;
     }
     return summary;
